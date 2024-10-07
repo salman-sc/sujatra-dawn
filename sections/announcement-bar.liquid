@@ -34,19 +34,30 @@
         {{ block.shopify_attributes }}
       >
         {%- if section.blocks.first.settings.text != blank -%}
-          {%- if section.blocks.first.settings.link != blank -%}
+          {%- if section.blocks.first.settings.link != blank and section.blocks.first.settings.url_text == blank -%}
             <a
               href="{{ section.blocks.first.settings.link }}"
               class="announcement-bar__link link link--text focus-inset animate-arrow"
             >
           {%- endif -%}
-          <p class="announcement-bar__message h5">
+          <p class="announcement-bar__message message-text h5">
             <span>{{ section.blocks.first.settings.text | escape }}</span>
-            {%- if section.blocks.first.settings.link != blank -%}
+            {%- if section.blocks.first.settings.link != blank and section.blocks.first.settings.url_text == blank -%}
               {{- 'icon-arrow.svg' | inline_asset_content -}}
             {%- endif -%}
+            {%- if section.blocks.first.settings.link != blank and section.blocks.first.settings.url_text != blank -%}
+              <span>&nbsp; - &nbsp;</span>
+              <span>
+                <a
+                  href="{{ section.blocks.first.settings.link }}"
+                  class="announcement-bar__link sujatra-link link link--text focus-inset animate-arrow"
+                >
+                  <span>{{ section.blocks.first.settings.url_text | escape }}</span>
+                </a>
+              </span>
+            {%- endif -%}
           </p>
-          {%- if section.blocks.first.settings.link != blank -%}
+          {%- if section.blocks.first.settings.link != blank and section.blocks.first.settings.url_text == blank -%}
             </a>
           {%- endif -%}
         {%- endif -%}
@@ -95,19 +106,30 @@
                   {{ block.shopify_attributes }}
                 >
                   {%- if block.settings.text != blank -%}
-                    {%- if block.settings.link != blank -%}
+                    {%- if block.settings.link != blank and block.settings.url_text == blank -%}
                       <a
                         href="{{ block.settings.link }}"
                         class="announcement-bar__link link link--text focus-inset animate-arrow"
                       >
                     {%- endif -%}
-                    <p class="announcement-bar__message h5">
+                    <p class="announcement-bar__message message-text h5">
                       <span>{{ block.settings.text | escape }}</span>
-                      {%- if block.settings.link != blank -%}
+                      {%- if block.settings.link != blank and block.settings.url_text == blank -%}
                         {{- 'icon-arrow.svg' | inline_asset_content -}}
                       {%- endif -%}
+                      {%- if block.settings.link != blank and block.settings.url_text != blank -%}
+                        <span>&nbsp; - &nbsp;</span>
+                        <span>
+                          <a
+                            href="{{ block.settings.link }}"
+                            class="announcement-bar__link link sujatra-link link--text focus-inset animate-arrow"
+                          >
+                            {{ block.settings.url_text | escape }}
+                          </a>
+                        </span>
+                      {%- endif -%}
                     </p>
-                    {%- if block.settings.link != blank -%}
+                    {%- if block.settings.link != blank and block.settings.url_text == blank -%}
                       </a>
                     {%- endif -%}
                   {%- endif -%}
@@ -177,7 +199,7 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
-      "default": "scheme-4"
+      "default": "scheme-6"
     },
     {
       "type": "checkbox",
@@ -249,6 +271,12 @@
           "id": "text",
           "default": "t:sections.announcement-bar.blocks.announcement.settings.text.default",
           "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
+        },
+        {
+          "type": "text",
+          "id": "url_text",
+          "default": "Shop Now",
+          "label": "Url Text"
         },
         {
           "type": "url",
